@@ -1,6 +1,8 @@
+import eventlet
+eventlet.monkey_patch()
+
 from flask import Flask, render_template
 from flask_socketio import SocketIO
-import eventlet
 import numpy as np
 import os
 import sys
@@ -12,8 +14,6 @@ sys.path.append(src_path)
 
 from aes import AES_Encryption                                                                                                                                                                                              # type: ignore
 from timing_attack import TimingAttack                                                                                                                                                                                      # type: ignore
-
-eventlet.monkey_patch()
 
 app = Flask(__name__)
 socketio = SocketIO(app, async_mode="eventlet")
@@ -59,4 +59,4 @@ def handle_stop_stream():
 if __name__ == "__main__":
     port = 5000  # Change if needed
     print(f"App is running at: http://127.0.0.1:{port}")
-    app.run(host="127.0.0.1", port=port, debug=True)
+    socketio.run(app, host="127.0.0.1", port=port, debug=True)
